@@ -9,11 +9,7 @@ public class PhoneBook {
         Map<String, HashSet> phoneBook = new HashMap<>();
         
         public void add(String lastname, String phone){
-            HashSet<String> s = null;
-            s = phoneBook.get(lastname);
-            if (s == null){
-                s = new HashSet<>();
-            }
+            HashSet s = phoneBook.getOrDefault(lastname, new HashSet<>());
             s.add(phone);            
             phoneBook.put(lastname, s);
         }
