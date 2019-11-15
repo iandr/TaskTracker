@@ -66,8 +66,11 @@ public class TaskService {
         }
     }
 
-    public ArrayList<Task> getTasksOrderedByStatus() {
-        return taskRepository.getTasksOrderedByStatus();
+    public ArrayList<Task> getTasksOrderedByStatus(TaskStatus... statuses) {
+        if (statuses.length == 0) {
+            return taskRepository.getTasksOrderedByStatusDefault();
+        }
+        return taskRepository.getTasksOrderedByStatus(statuses);
     }
 
     public long getTaskCountFilterByStatus(TaskStatus status) {

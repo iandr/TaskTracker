@@ -5,6 +5,7 @@ import com.geekbrains.erth.tracker.entities.TaskStatus;
 import com.geekbrains.erth.tracker.services.TaskService;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 public class MainApp {
     public static void main(String[] args) {
@@ -33,6 +34,8 @@ public class MainApp {
         System.out.println(taskService.taskExistsById(10));
 
         System.out.println(taskService.getTasksOrderedByStatus());
+        System.out.println(taskService.getTasksOrderedByStatus(TaskStatus.CLOSED, TaskStatus.IN_PROGRESS));
+        System.out.println(taskService.getTasksOrderedByStatus(TaskStatus.IN_PROGRESS, TaskStatus.CREATED, TaskStatus.CLOSED));
         System.out.println(taskService.getTaskCountFilterByStatus(TaskStatus.IN_PROGRESS));
         System.out.println(taskService.getTaskCountFilterByStatus(TaskStatus.CLOSED));
         System.out.println(taskService.getTaskCountFilterByStatus(TaskStatus.CREATED));

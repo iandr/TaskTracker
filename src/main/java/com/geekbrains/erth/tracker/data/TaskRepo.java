@@ -14,7 +14,8 @@ public interface TaskRepo {
     ArrayList getList();
 
     ArrayList<Task> getTasksFilterByStatus(TaskStatus status);
-    ArrayList<Task> getTasksOrderedByStatus();
+    ArrayList<Task> getTasksOrderedByStatusDefault();
+    ArrayList<Task> getTasksOrderedByStatus(TaskStatus... statuses);
     long getTaskCountFilterByStatus(TaskStatus status);
 
 }

@@ -6,10 +6,8 @@ import com.geekbrains.erth.tracker.exceptions.TaskExistsException;
 import com.geekbrains.erth.tracker.exceptions.TaskNotExistException;
 import com.geekbrains.erth.tracker.exceptions.TaskRepoOverflowException;
 
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Optional;
+import java.lang.reflect.Array;
+import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -45,12 +43,9 @@ public class TaskRepository implements TaskRepo {
 
     @Override
     public Task getTaskById(int id) {
-        Optional<Task> opt = taskArray.stream().filter(task -> task.getId() == id).findAny();
-        if (opt.isPresent()){
-            return opt.get();
-        } else{
-            throw new TaskNotExistException("Заявки с ИД " + id + " нет");
-        }
+        return  taskArray.stream().filter(task -> task.getId() == id)
+                .findAny()
+                .orElseThrow(() -> new TaskNotExistException("Заявки с ИД " + id + " нет"));
     }
 
     @Override
@@ -70,7 +65,20 @@ public class TaskRepository implements TaskRepo {
                 .collect(Collectors.toList());
     }
 
-    public ArrayList<Task> getTasksOrderedByStatus() {
+    public ArrayList<Task> getTasksOrderedByStatus(TaskStatus... statuses) {
+        Map<TaskStatus, Integer> priorityMap = new HashMap<>();
+        for (int i = 0; i < statuses.length; i++) {
+            priorityMap.put(statuses[i], i);
+        }
+        return (ArrayList<Task>) taskArray.stream()
+                .sorted(Comparator.comparingInt(key -> {
+                    Integer priority = priorityMap.get(key.getStatus());
+                    return (priority == null ? Integer.MAX_VALUE : priority);
+                }))
+                .collect(Collectors.toList());
+    }
+
+    public ArrayList<Task> getTasksOrderedByStatusDefault() {
         return (ArrayList<Task>) taskArray.stream()
                 .sorted(Comparator.comparingInt(a -> a.getStatus().getPriority()))
                 .collect(Collectors.toList());
