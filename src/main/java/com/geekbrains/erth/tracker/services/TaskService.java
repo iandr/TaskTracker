@@ -8,7 +8,9 @@ import com.geekbrains.erth.tracker.exceptions.TaskExistsException;
 import com.geekbrains.erth.tracker.exceptions.TaskNotExistException;
 import com.geekbrains.erth.tracker.exceptions.TaskRepoOverflowException;
 
+import java.io.*;
 import java.util.ArrayList;
+import java.util.List;
 
 public class TaskService {
     private TaskRepo taskRepository;
@@ -21,9 +23,7 @@ public class TaskService {
         try {
             taskRepository.addTask(task);
             System.out.println("Задача " + task.getTitle() + " успешно добавлена");
-        } catch (TaskRepoOverflowException e) {
-            System.out.println(e);
-        } catch (TaskExistsException e) {
+        } catch (TaskRepoOverflowException | TaskExistsException e) {
             System.out.println(e);
         }
     }
@@ -75,5 +75,33 @@ public class TaskService {
 
     public long getTaskCountFilterByStatus(TaskStatus status) {
         return taskRepository.getTaskCountFilterByStatus(status);
+    }
+
+    public void exportToFile(List<Task> tasks, String fileName) {
+        try (ObjectOutputStream objectOutputStream = new ObjectOutputStream(new FileOutputStream(fileName))) {
+            for (int i = 0; i < tasks.size(); i++) {
+                objectOutputStream.writeObject(tasks.get(i));
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public List<Task> importFromFile(String fileName) {
+        List<Task> taskList = new ArrayList<>();
+
+        try (ObjectInputStream in = new ObjectInputStream(new FileInputStream(fileName))){
+            try {
+                while (true) {
+                    taskList.add((Task) in.readObject());
+                }
+            } catch (EOFException e) {
+                //подавляем исключение. дошли до конца файла, больше объектов нет, всё ок
+            }
+        } catch (IOException | ClassNotFoundException e) {
+            e.printStackTrace();
+        } finally {
+            return taskList;
+        }
     }
 }

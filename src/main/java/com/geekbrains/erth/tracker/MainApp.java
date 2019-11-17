@@ -5,7 +5,6 @@ import com.geekbrains.erth.tracker.entities.TaskStatus;
 import com.geekbrains.erth.tracker.services.TaskService;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 
 public class MainApp {
     public static void main(String[] args) {
@@ -22,22 +21,16 @@ public class MainApp {
         taskService.deleteTask(4);
         tasks[0].setStatus(TaskStatus.IN_PROGRESS);
         tasks[1].setStatus(TaskStatus.IN_PROGRESS);
-        tasks[5].setStatus(TaskStatus.CLOSED);
         taskService.printTaskList();
 
         ArrayList createdTasks = taskService.getTasksFilterByStatus(TaskStatus.CREATED);
-        System.out.println(createdTasks);
-        ArrayList progressTasks = taskService.getTasksFilterByStatus(TaskStatus.IN_PROGRESS);
-        System.out.println(progressTasks);
+        taskService.exportToFile(createdTasks, "tasks.dat");
+        System.out.println(taskService.importFromFile("tasks.dat"));
 
-        System.out.println(taskService.taskExistsById(1));
-        System.out.println(taskService.taskExistsById(10));
+        //вернёт пустой список
+        ArrayList closedTasks = taskService.getTasksFilterByStatus(TaskStatus.CLOSED);
+        taskService.exportToFile(closedTasks, "tasks2.dat");
+        System.out.println(taskService.importFromFile("tasks2.dat"));
 
-        System.out.println(taskService.getTasksOrderedByStatus());
-        System.out.println(taskService.getTasksOrderedByStatus(TaskStatus.CLOSED, TaskStatus.IN_PROGRESS));
-        System.out.println(taskService.getTasksOrderedByStatus(TaskStatus.IN_PROGRESS, TaskStatus.CREATED, TaskStatus.CLOSED));
-        System.out.println(taskService.getTaskCountFilterByStatus(TaskStatus.IN_PROGRESS));
-        System.out.println(taskService.getTaskCountFilterByStatus(TaskStatus.CLOSED));
-        System.out.println(taskService.getTaskCountFilterByStatus(TaskStatus.CREATED));
     }
 }

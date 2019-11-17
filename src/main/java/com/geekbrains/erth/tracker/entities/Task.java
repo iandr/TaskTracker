@@ -1,7 +1,11 @@
 
 package com.geekbrains.erth.tracker.entities;
 
-public class Task {
+import java.io.Serializable;
+
+public class Task implements Serializable {
+    private static final long serialVersionUID = 9104148893851876153L;
+
     private int id;
     private String title;
     private String owner;
