@@ -1,0 +1,21 @@
+<persistence version="1.0"
+             xmlns="http://java.sun.com/xml/ns/persistence"
+             xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+             xsi:schemaLocation="http://java.sun.com/xml/ns/persistence http://java.sun.com/xml/ns/persistence/persistence_1_0.xsd">
+
+    <persistence-unit name="com.geekbrains.erth.tracker.entity_manager">
+        <description>JPA Demo</description>
+        <provider>org.hibernate.ejb.HibernatePersistence</provider>
+            <properties>
+                <property name="hibernate.dialect" value="org.hibernate.dialect.Oracle10gDialect"/>
+                <property name="javax.persistence.jdbc.driver" value="oracle.jdbc.OracleDriver"/>
+                <property name="javax.persistence.jdbc.url" value="jdbc:oracle:thin:@localhost:1521/orcldb"/>
+                <property name="javax.persistence.jdbc.user" value="SCOTT"/>
+                <property name="javax.persistence.jdbc.password" value="TIGER"/>
+                <property name="hibernate.connection.CharSet" value="windows1251"/>
+                <property name="hibernate.connection.characterEncoding" value="windows1251"/>
+            </properties>
+
+    </persistence-unit>
+
+</persistence>
