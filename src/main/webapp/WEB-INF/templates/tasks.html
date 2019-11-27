@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <title>Трекер задач</title>
+
+    <link rel="stylesheet" type="text/css"  th:href="@{/resources/css/table.css}"/>
+</head>
+
+<body>
+    <h1>Список задач</h1>
+    <br>
+
+    <table>
+        <thead>
+            <th>ИД</th>
+            <th>Название</th>
+            <th>Автор</th>
+            <th>Исполнитель</th>
+            <th>Описание</th>
+            <th>Статус</th>
+        </thead>
+        <tbody>
+            <tr th:each="t : ${tasks}">
+                <td th:text="${t.id}"></td>
+                <td th:text="${t.title}"></td>
+                <td th:text="${t.owner}"></td>
+                <td th:text="${t.executor}"></td>
+                <td th:text="${t.description}"></td>
+                <td th:text="${t.status}"></td>
+            </tr>
+        </tbody>
+    </table>
+    <a th:href="@{/addTask}">Добавить задачу</a>
+    <br>
+    <a th:href="@{/}">на Главную страницу</a>
+</body>
+</html>
