@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <title>Трекер задач</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.0/css/bootstrap.min.css" integrity="sha384-SI27wrMjH3ZZ89r4o+fGIJtnzkAnFs3E4qz9DIYioCQ5l9Rd/7UAa8DHcaL8jkWt" crossorigin="anonymous">
+</head>
+
+<body th:object="${task}">
+    ИД: <input th:field="*{id}"/> <br>
+    Название: <input th:field="*{title}"/> <br>
+    Описание: <input th:field="*{description}"/> <br>
+    Исполнитель: <input th:field="*{executor}"/> <br>
+    Автор:<input th:field="*{owner}"/> <br>
+    <form th:action="@{/task/{id}/delete(id=${task.id})}" th:method="POST">
+        <input class="btn btn-danger" type="submit" value="Удалить"/>
+    </form>
+    <a th:href="@{/}">на Главную страницу</a>
+</body>
+</html>
