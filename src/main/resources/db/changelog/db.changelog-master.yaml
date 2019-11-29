@@ -1,0 +1,47 @@
+databaseChangeLog:
+  - logicalFilePath: db/changelog/db.changelog-lesson1.yaml
+  - changeSet:
+      id: 1
+      author: andronov
+      changes:
+        - createTable:
+            tableName: tasks
+            columns:
+              - column:
+                  name: id
+                  type: integer
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: title
+                  type: varchar2(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: owner
+                  type: varchar2(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: executor
+                  type: varchar2(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: description
+                  type: varchar2(4000)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: status
+                  type: varchar2(255)
+                  constraints:
+                    nullable: false
+  - changeSet:
+      id: 2
+      author: andronov
+      changes:
+        - createSequence:
+            sequenceName: s_task_id

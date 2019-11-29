@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <title>Трекер задач</title>
+
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.0/css/bootstrap.min.css" integrity="sha384-SI27wrMjH3ZZ89r4o+fGIJtnzkAnFs3E4qz9DIYioCQ5l9Rd/7UAa8DHcaL8jkWt" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css"  th:href="@{/css/table.css}"/>
+</head>
+
+<body>
+    <h1>Список задач</h1>
+    <br>
+    <form th:action="@{/task}" method="get">
+        <select name="status">
+            <option value="">Выберите статус</option>
+            <option th:each="TaskStatusOpt : ${T(com.geekbrains.erth.tracker.entities.TaskStatus).values()}"
+                    th:value="${TaskStatusOpt}" th:text="${TaskStatusOpt}"></option>
+        </select>
+        <button class="btn btn-info" type="submit">Применить фильтр по статусу</button>
+    </form>
+    <br/>
+    <form th:action="@{/task}" method="get">
+        <input name="executor" placeholder="Введите исполнителя"/>
+        <button class="btn btn-info" type="submit">Применить фильтр по исполнителю</button>
+    </form>
+
+
+    <table>
+        <thead>
+            <th>ИД</th>
+            <th>Название</th>
+            <th>Автор</th>
+            <th>Исполнитель</th>
+            <th>Описание</th>
+            <th>Статус</th>
+            <th>Действия</th>
+        </thead>
+        <tbody>
+            <tr th:each="t : ${tasks}">
+                <td th:text="${t.id}"></td>
+                <td th:text="${t.title}"></td>
+                <td th:text="${t.owner}"></td>
+                <td th:text="${t.executor}"></td>
+                <td th:text="${t.description}"></td>
+                <td th:text="${t.status}"></td>
+                <td><a th:href="@{/task/{id}(id=${t.id})}" class="btn btn-primary" role="button">Открыть задачу</a></td>
+            </tr>
+        </tbody>
+    </table>
+    <a th:href="@{/addTask}" class="btn btn-success" role="button">Добавить задачу</a>
+    <br>
+    <a th:href="@{/}">на Главную страницу</a>
+</body>
+</html>
