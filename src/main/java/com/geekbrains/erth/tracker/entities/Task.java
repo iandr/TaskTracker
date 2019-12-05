@@ -1,15 +1,18 @@
 
 package com.geekbrains.erth.tracker.entities;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
 import javax.persistence.*;
 
+@NoArgsConstructor
 @Entity
 @Table(name = "tasks")
-@Component
-@Scope(value = "prototype")
+@Data
 public class Task {
 
     @Id
@@ -17,50 +20,22 @@ public class Task {
     @SequenceGenerator(name = "s_task_id", sequenceName = "s_task_id", allocationSize = 1)
     private Long id;
     private String title;
-    private String owner;
-    private String executor;
     private String description;
+
+    @ManyToOne
+    @JoinColumn(name = "owner",referencedColumnName="id")
+    @JsonManagedReference
+    private User owner;
+
+    @ManyToOne
+    @JoinColumn(name = "executor",referencedColumnName="id")
+    @JsonManagedReference
+    private User executor;
 
 	@Column(name = "status")
     @Enumerated(javax.persistence.EnumType.STRING)
     private TaskStatus status;
 
-    public Task() {
-    }
-
-    public Task(String title) {
-        this.title = title;
-        this.owner = "Создано автоматически";
-        this.executor = "Робот-исполнитель";
-        this.description = "...";
-        this.status = TaskStatus.CREATED;
-    }
-
-    public Task(Long id, String title, String owner, String executor, String description, TaskStatus status) {
-        this.id = id;
-        this.title = title;
-        this.owner = owner;
-        this.executor = executor;
-        this.description = description;
-        this.status = status;
-    }
-    public Task(Long id, String title, String owner, String executor, String description) {
-        this.id = id;
-        this.title = title;
-        this.owner = owner;
-        this.executor = executor;
-        this.description = description;
-        this.status = TaskStatus.CREATED;
-    }
-
-    public Task(Long id, String title) {
-        this.id = id;
-        this.title = title;
-        this.owner = "Создано автоматически";
-        this.executor = "Робот-исполнитель";
-        this.description = "...";
-        this.status = TaskStatus.CREATED;
-    }
 
     public void setId(Long id) {
         this.id = id;
@@ -70,11 +45,11 @@ public class Task {
         this.title = title;
     }
 
-    public void setOwner(String owner) {
+    public void setOwner(User owner) {
         this.owner = owner;
     }
 
-    public void setExecutor(String executor) {
+    public void setExecutor(User executor) {
         this.executor = executor;
     }
 
@@ -86,11 +61,11 @@ public class Task {
         return id;
     }
 
-    public String getOwner() {
+    public User getOwner() {
         return owner;
     }
 
-    public String getExecutor() {
+    public User getExecutor() {
         return executor;
     }
 

@@ -9,18 +9,41 @@
 </head>
 
 <body>
-<form th:action="@{/task/add}" th:object="${task}" method="POST">
-    Название: <input th:field="*{title}"/> <br>
-    Описание: <input th:field="*{description}"/> <br>
-    Исполнитель:
-    <select th:field="*{executor}">
-        <option value="Андронов" th:text="Андронов" label="Андронов" />
-        <option value="Кирюшин" th:text="Кирюшин" label="Кирюшин" />
-    </select> <br>
-    Автор:<input th:field="*{owner}"/> <br>
+    <form th:action="@{/task/add}" th:object="${task}" method="POST">
+        <div class="form-group col-md-6">
+            <label for="inputTitle">Название</label>
+            <input th:field="*{title}" type="text" class="form-control" id="inputTitle">
+        </div>
+        <div class="form-group col-md-6">
+            <label for="inputDescription">Описание</label>
+            <input th:field="*{description}" type="text" class="form-control" id="inputDescription">
+        </div>
 
-    <input type="submit" value="Submit" />
-</form>
-<a th:href="@{/}">на Главную страницу</a>
+        <div class="form-group col-md-4">
+            <label for="inputExecutor">Исполнитель</label>
+            <select id="inputExecutor" class="form-control" th:name="executorId">
+                <option selected>Выберите исполнителя</option>
+                <option th:each="e : ${executor}"
+                        th:value="${e.id}" th:text="${e.name}"></option>
+            </select>
+        </div>
+
+        <div class="form-group col-md-4">
+            <label for="inputOwner">Автор</label>
+            <select id="inputOwner" class="form-control" th:name="ownerId">
+                <option selected>Выберите автора</option>
+                <option th:each="e : ${owner}"
+                        th:value="${e.id}" th:text="${e.name}"></option>
+            </select>
+        </div>
+
+        <div class="form-group col-md-4">
+            <button type="submit" class="btn btn-primary">Создать</button>
+        </div>
+    </form>
+
+    <div class="form-group col-md-4">
+        <a th:href="@{/}" class="btn btn-secondary">на Главную страницу</a>
+    </div>
 </body>
 </html>

@@ -3,8 +3,10 @@ package com.geekbrains.erth.tracker.controllers;
 import com.geekbrains.erth.tracker.data.specifications.TaskSpecifications;
 import com.geekbrains.erth.tracker.entities.Task;
 import com.geekbrains.erth.tracker.entities.TaskStatus;
+import com.geekbrains.erth.tracker.entities.User;
 import com.geekbrains.erth.tracker.exceptions.TaskNotExistException;
 import com.geekbrains.erth.tracker.services.TaskService;
+import com.geekbrains.erth.tracker.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Controller;
@@ -12,33 +14,28 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @Controller
 public class TaskController {
     private TaskService taskService;
+    private UserService userService;
 
     @Autowired
     public void setTaskService(TaskService taskService) {
         this.taskService = taskService;
     }
 
+    @Autowired
+    public void setUserService(UserService userService) {
+        this.userService = userService;
+    }
+
     // GET http://localhost:8189/app/task/
     @GetMapping("/task")
-    public String showTasks(Model model,
-                            @RequestParam(name = "status", required = false) TaskStatus status,
-                            @RequestParam(name = "executor", required = false) String executor
-    ) {
+    public String showTasks(Model model, @RequestParam Map<String, String> params) {
         List<Task> tasks;
-        Specification<Task> spec = Specification.where(null);
-
-        if (status != null) {
-            spec = spec.and(TaskSpecifications.statusEq(status));
-        }
-
-        if (executor != null) {
-            spec = spec.and(TaskSpecifications.executorContains(executor));
-        }
-        tasks = taskService.getTaskList(spec);
+        tasks = taskService.getTaskList(taskService.getSpec(params));
 
         model.addAttribute("tasks", tasks);
         model.addAttribute("taskStatus", TaskStatus.class);
@@ -49,14 +46,23 @@ public class TaskController {
     @GetMapping("/task/add")
     public String showSimpleForm(Model model) {
         Task task = new Task();
+        List<User> owners = userService.findAll();
+        List<User> executors = userService.findAll();
         model.addAttribute("task", task);
+        model.addAttribute("owner", owners);
+        model.addAttribute("executor", executors);
         return "task_form";
     }
 
     // POST http://localhost:8189/app/task
     @PostMapping("/task/add")
-    public String processForm(@ModelAttribute("task") Task task) {
+    public String processForm(@ModelAttribute("task") Task task,
+                              @RequestParam Map<String, String> params
+    ) {
+        task.setExecutor(userService.getById(Long.parseLong(params.get("executorId"))));
+        task.setOwner(userService.getById(Long.parseLong(params.get("ownerId"))));
         task.setStatus(TaskStatus.CREATED);
+
         taskService.addTask(task);
         return "redirect:/task";
     }
