@@ -1,0 +1,26 @@
+<ui:UiBinder xmlns:ui='urn:ui:com.google.gwt.uibinder'
+             xmlns:g='urn:import:com.google.gwt.user.client.ui'>
+
+    <g:DecoratorPanel>
+            <g:VerticalPanel spacing="10">
+                <g:HorizontalPanel>
+                    <g:Label styleName="col-form-label" text="Название" width="100px"/>
+                    <g:TextBox styleName="form-control" ui:field="titleText"/>
+                </g:HorizontalPanel>
+                <g:HorizontalPanel>
+                    <g:Label styleName="col-form-label" text="Описание" width="100px"/>
+                    <g:TextBox styleName="form-control" ui:field="descriptionText"/>
+                </g:HorizontalPanel>
+                <g:HorizontalPanel>
+                    <g:Label styleName="col-form-label" text="Автор" width="100px"/>
+                    <g:TextBox styleName="form-control" ui:field="ownerText"/>
+                </g:HorizontalPanel>
+                <g:HorizontalPanel>
+                    <g:Label styleName="col-form-label" text="Исполнитель" width="100px"/>
+                    <g:ListBox styleName="custom-select-sm" ui:field="executorList"/>
+                </g:HorizontalPanel>
+                <g:Button styleName="btn btn-outline-primary" ui:field="btnClose">Закрыть</g:Button>
+                <g:Button styleName="btn btn-outline-secondary" ui:field="btnChangeExec">Сменить исполнителя</g:Button>
+            </g:VerticalPanel>
+    </g:DecoratorPanel>
+</ui:UiBinder>
